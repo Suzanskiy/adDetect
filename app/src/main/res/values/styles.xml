@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Horizontal_Progressbar">
+        <item name="android:maxHeight">20dp</item>
+        <item name="android:progressDrawable">@drawable/progress_horizontal</item>
+        <item name="android:minHeight">10dp</item>
+    </style>
+
+
+</resources>

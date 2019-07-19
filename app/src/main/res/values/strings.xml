@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="abc_action_mode_done">Done</string>
+    <string name="abc_action_bar_home_description">Navigate home</string>
+    <string name="abc_action_bar_up_description">Navigate up</string>
+    <string name="abc_action_menu_overflow_description">More options</string>
+    <string name="abc_searchview_description_search">Search</string>
+    <string name="abc_searchview_description_query">Search query</string>
+    <string name="abc_searchview_description_clear">Clear query</string>
+    <string name="abc_searchview_description_submit">Submit query</string>
+    <string name="abc_searchview_description_voice">Voice search</string>
+    <string name="abc_activitychooserview_choose_application">Choose an app</string>
+    <string name="abc_activity_chooser_view_see_all">See all</string>
+    <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
+    <string name="abc_shareactionprovider_share_with">Share with</string>
+    <string name="app_name">Ad Detector</string>
+    <string name="text_scan">Scanning…</string>
+    <string name="button_ok">Okay</string>
+    <string name="button_cancel">CANCEL</string>
+    <string name="description_tad">http://www.t-ad.co.kr</string>
+    <string name="description_adam">http://mobile.biz.daum.net</string>
+    <string name="description_dawin">http://www.incross.com/web/dreambox/Dawin.do</string>
+    <string name="description_admob">http://www.admob.com</string>
+    <string name="description_inmobi">http://www.inmobi.com</string>
+    <string name="description_ablib">http://adlibr.com</string>
+    <string name="description_applift">http://www.applift.com</string>
+    <string name="description_tapjoy">http://home.tapjoy.com</string>
+    <string name="description_millennialmedia">http://www.millennialmedia.com</string>
+    <string name="description_appflood">http://appflood.com</string>
+    <string name="description_mopub">http://www.mopub.com</string>
+    <string name="description_shallwead">http://www.shallwead.com</string>
+    <string name="description_mojise">http://www.mojise.com</string>
+    <string name="description_airpush">http://www.airpush.com</string>
+    <string name="description_leadbolt">http://www.leadbolt.com</string>
+    <string name="description_moolah">http://www.moolahmedia.com</string>
+    <string name="description_senddroid">http://senddroid.com</string>
+    <string name="description_applovin">https://www.applovin.com</string>
+    <string name="description_appboy">http://www.appboy.com</string>
+    <string name="description_amazon">https://developer.amazon.com/public/apis/earn/mobile-ads</string>
+</resources>
