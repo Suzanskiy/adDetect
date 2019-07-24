@@ -5,6 +5,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
@@ -56,7 +57,7 @@ public class CircularDrawable extends Drawable {
     }
 
     public int getOpacity() {
-        return -3;
+        return PixelFormat.TRANSLUCENT;
     }
 
     public int getIntrinsicWidth() {

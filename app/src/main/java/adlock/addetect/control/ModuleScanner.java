@@ -9,6 +9,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageItemInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,6 +97,7 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
         cancel(true);
     }
 
+    @Override
     protected void onPreExecute() {
         if (this.mCallbackListener != null) {
             this.mCallbackListener.onStart();
@@ -107,6 +110,7 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
         this.mDialog.show();
     }
 
+    @Override
     protected void onCancelled() {
         super.onCancelled();
         if (this.mDialog != null) {
@@ -115,6 +119,7 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
         }
     }
 
+    @Override
     protected Boolean doInBackground(Void... params) {
         boolean isSucceed = true;
         List<PackageInfo> packageInfoList = this.mPackageManager.getInstalledPackages(0);
@@ -131,22 +136,22 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
                 if ((flag & 1) == 0 && (flag & 128) == 0 && this.mPackageManager.checkPermission("android.permission.INTERNET", packageInfo.packageName) == 0) {
                     parsePackage(packageInfo);
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
-        try {
+       /* try {
             Thread.sleep(500);
-        } catch (Exception e2) {
-        }
-        return Boolean.valueOf(isSucceed);
+        } catch (Exception ignored) {
+        }*/
+        return isSucceed;
     }
 
-
+    @Override
     protected void onProgressUpdate(Object... items) {
         try {
             String name = (String) items[0];
-            int index = ((Integer) items[1]).intValue();
-            int size = ((Integer) items[2]).intValue();
+            int index = (Integer) items[1];
+            int size = (Integer) items[2];
             if (this.mCallbackListener != null) {
                 this.mCallbackListener.onProgress(name, index, size);
             }
@@ -157,8 +162,9 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
         }
     }
 
+    @Override
     protected void onPostExecute(Boolean result) {
-        if (result.booleanValue() && this.mCallbackListener != null) {
+        if (result && this.mCallbackListener != null) {
             this.mCallbackListener.onCompletion(new ArrayList(this.mApplicationItemMap.values()));
         }
         if (this.mDialog != null) {
@@ -173,12 +179,16 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
         PackageItemInfo[] receiverInfoArray = packageInfo.receivers;
         if (activityInfoArray.length > 0) {
             checkModle(packageInfo, activityInfoArray);
+           // Log.v("Brod2","package info "+ activityInfoArray.toString());
         }
         if (serviceInfoArray.length > 0) {
             checkModle(packageInfo, serviceInfoArray);
+          //  Log.v("Brod2","serviceInfoArray "+ serviceInfoArray.toString());
+
         }
         if (receiverInfoArray.length > 0) {
             checkModle(packageInfo, receiverInfoArray);
+           // Log.v("Brod2","receiverInfoArray "+ receiverInfoArray.toString());
         }
     }
 
@@ -192,6 +202,8 @@ public class ModuleScanner extends AsyncTask<Void, Object, Boolean> {
                         applicationItem = new ApplicationItem(packageInfo);
                         this.mApplicationItemMap.put(packageInfo.packageName, applicationItem);
                     }
+                  //  Log.v("Brod2", applicationItem.getPackageInfo().toString());
+Log.v("Brod2", applicationItem.getPackageInfo().toString()+" "+ applicationItem.getModuleSet().toString());
                     applicationItem.addModule(module);
                 }
             }

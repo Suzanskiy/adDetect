@@ -1,12 +1,17 @@
 package adlock.addetect;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +24,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import java.util.List;
+import java.util.Objects;
 
 import adlock.addetect.control.Module;
 import adlock.addetect.control.ModuleScanner;
@@ -43,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ModuleScanner mModuleScanner;
     private FloatingButton mRefreshButton;
     private OnClickListener mRefreshClickListener = new C00964();
-
+    private List<ApplicationItem> mApplicationItemList;
 
     class C00952 implements OnItemClickListener {
         C00952() {
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* renamed from: krow.dev.addetector.MainActivity$4 */
+
     class C00964 implements OnClickListener {
         C00964() {
         }
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.mApplicationListAdapter.setApplicationItemList(applicationItemList);
             MainActivity.this.mApplicationListAdapter.notifyDataSetChanged();
             MainActivity.this.mRefreshButton.setVisibility(View.VISIBLE);
+            mApplicationItemList = applicationItemList;
         }
     }
 
@@ -113,18 +120,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       // getApplicationContext().unregisterReceiver(br);
+    }
+
+    BroadcastReceiver br;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //  setupActionbar();
         initializeView();
-    }
 
-  /*  private void setupActionbar() {
-        getSupportActionBar().setDisplayOptions(2);
-        getSupportActionBar().setTitle((int) C0097R.string.app_name);
-    }*/
+
+        br = new myBroadcastReceiver();
+        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+        filter.addDataScheme("package");
+        getApplicationContext().registerReceiver(br, filter);
+
+
+    }
 
 
     private void initializeView() {
@@ -133,10 +152,10 @@ public class MainActivity extends AppCompatActivity {
         boolean isOverlay = false;
         if (VERSION.SDK_INT >= 19) {
             isOverlay = true;
-            this.mHeaderView = new View(getApplicationContext());
-            this.mHeaderView.setLayoutParams(new LayoutParams(-1, headerHeight));
-            this.mFooterview = new View(getApplicationContext());
-            this.mFooterview.setLayoutParams(new LayoutParams(-1, footerHeight));
+          /*  this.mHeaderView = new View(getApplicationContext());
+            this.mHeaderView.setLayoutParams(new LayoutParams(-1, headerHeight));*/
+          /*  this.mFooterview = new View(getApplicationContext());
+            this.mFooterview.setLayoutParams(new LayoutParams(-1, footerHeight));*/
             SystemBarTintManager systemBarTintManager = new SystemBarTintManager(this);
             systemBarTintManager.setStatusBarTintEnabled(true);
             systemBarTintManager.setNavigationBarTintEnabled(true);
@@ -148,19 +167,20 @@ public class MainActivity extends AppCompatActivity {
         bindRefreshButton(headerHeight);
         this.mApplicationListAdapter = new AppListAdapter(getApplicationContext());
 
-         mApplicationListAdapter.setOnLinkClickListener(this.mLinkClickListener);//
+        mApplicationListAdapter.setOnLinkClickListener(this.mLinkClickListener);//
         ListView mApplicationListView = (ListView) findViewById(R.id.list_package);
         mApplicationListView.setOnItemClickListener(this.mApplicationItemClickListener);
-        mApplicationListView.addFooterView(getLayoutInflater().inflate(R.layout.footer_dummy, null));
+       /* mApplicationListView.addFooterView(getLayoutInflater().inflate(R.layout.footer_dummy, null));
         if (this.mHeaderView != null) {
             mApplicationListView.addHeaderView(this.mHeaderView);
         }
         if (this.mFooterview != null) {
             mApplicationListView.addFooterView(this.mFooterview);
-        }
+        }*/
         mApplicationListView.setAdapter(this.mApplicationListAdapter);
     }
-@Override
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (this.mApplicationListAdapter.getCount() <= 0) {
@@ -168,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
             scanModule();
         }
     }
-@Override
+
+    @Override
     protected void onStop() {
         stopScan();
         super.onStop();
